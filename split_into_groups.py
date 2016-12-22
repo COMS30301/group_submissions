@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import re
 import shutil
 import sys
 
@@ -58,6 +59,14 @@ students.fillna("", inplace=True)
 students.to_csv(os.path.join(os.path.split(ROOT)[0], "student_group.csv"))
 
 ################################################################################
+def remove_archived(root):
+    for k in os.listdir(root):
+        if re.match("\d+-.*", k) is not None or k.startswith("."):
+            l = os.path.join(root,k)
+            if os.path.isdir(l):
+                shutil.rmtree(l)
+            else:
+                os.remove(l)
 
 students.index = students["Candidate"].values
 groups = list(set(students["Groups"].values))
@@ -72,7 +81,18 @@ for i in groups:
     st = students[students["Groups"] == i]["Candidate"].values
     for j in st:
         try:
-            shutil.copytree(os.path.join(ROOT,str(j)), os.path.join(OUTDIR,i,str(j)))
+            out_dir = os.path.join(OUTDIR,i,str(j))
+            shutil.copytree(os.path.join(ROOT,str(j)), out_dir)
+            # Remove archived submissions
+            # On time
+            remove_archived(out_dir)
+            out_dir_ls = os.listdir(out_dir)
+            # Day late
+            if "daylate" in out_dir_ls:
+                remove_archived(os.path.join(out_dir,"daylate"))
+            # Week late
+            if "weeklate" in out_dir_ls:
+                remove_archived(os.path.join(out_dir,"weeklate"))
         except OSError:
             non_submitters.append((i, str(j)))
 for i in sorted(non_submitters):
