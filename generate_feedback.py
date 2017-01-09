@@ -44,9 +44,13 @@ FEEDBACK_FILE = "feedback.txt"
 
 
 # for each folder in current directory if it contains`feedback.txt`
-dirs = [os.path.join(ROOT,d) for d in os.listdir(ROOT) \
-        if os.path.isdir(os.path.join(ROOT,d)) and \
-           os.path.exists(os.path.join(ROOT,d,FEEDBACK_FILE))]
+dirs = []
+for d in os.listdir(ROOT):
+    if os.path.isdir(os.path.join(ROOT,d)):
+        if os.path.exists(os.path.join(ROOT,d,FEEDBACK_FILE)):
+            dirs.append(os.path.join(ROOT,d))
+        else:
+            print "No feedback for group %s" % d
 
 escape_doublequotes = re.compile(r"\"(?!\")", re.IGNORECASE)
 for d in dirs:
