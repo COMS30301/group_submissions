@@ -71,7 +71,7 @@ for d in dirs:
 
     for candidate in os.listdir(d):
         p = os.path.join(d, candidate)
-        if not os.path.isdir(p):
+        if not os.path.isdir(p) or not candidate.strip("/").isdigit():
             continue
         FEEDBACK.append("%s, %d, %s" % (candidate.strip(), mark, feedback))
 
