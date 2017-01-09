@@ -64,7 +64,7 @@ for d in dirs:
 
         # check for unescaped double-quotes
         if feedback.find("\"") != -1:
-            print "    Unescaped *\"* in: %s/feedback.txt." % d
+            print "Unescaped *\"* in: %s/feedback.txt" % d
             feedback, _ = escape_doublequotes.subn("\"\"", feedback)
         feedback = "\"%s\"" % feedback
 
