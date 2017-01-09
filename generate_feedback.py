@@ -3,7 +3,7 @@
 import os
 import sys
 
-print """
+"""
 Generate feedback from student submissions.
 The folder name should be the name of the Courseowrk in FEN.
 Required structure of the submission (12345, 54321, etc. are candidate numbers):
@@ -30,6 +30,7 @@ separated by a comma e.g.:
 
     7, "Feedback."
 """
+
 if len(sys.argv) != 2:
     print "Please give folder with submissions (using the above structure) as"
     print "an argument."
