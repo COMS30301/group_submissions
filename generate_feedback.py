@@ -1,6 +1,7 @@
 #! /usr/bin/env python2
 # -*- coding: utf-8 -*-
 import os
+import re
 import sys
 
 """
@@ -47,6 +48,7 @@ dirs = [os.path.join(ROOT,d) for d in os.listdir(ROOT) \
         if os.path.isdir(os.path.join(ROOT,d)) and \
            os.path.exists(os.path.join(ROOT,d,FEEDBACK_FILE))]
 
+escape_doublequotes = re.compile(r"\"(?!\")", re.IGNORECASE)
 for d in dirs:
     feedback, mark = "", 0
     with open(os.path.join(d,FEEDBACK_FILE), "r") as ff:
@@ -54,11 +56,14 @@ for d in dirs:
         f_split = f.split(",", 1)
         mark = int(f_split[0])
         feedback = f_split[1].strip()
+        feedback = feedback.strip("\"")
 
         # check for unescaped double-quotes
-        if feedback.strip("\"").find("\"") != -1:
-            print "Unescaped *\"* in: %s/feedback.txt." % d
-            sys.exit(1)
+        if feedback.find("\"") != -1:
+            print "    Unescaped *\"* in: %s/feedback.txt." % d
+            feedback, _ = escape_doublequotes.subn("\"\"", feedback)
+        feedback = "\"%s\"" % feedback
+
 
     for candidate in os.listdir(d):
         p = os.path.join(d, candidate)
