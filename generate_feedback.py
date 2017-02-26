@@ -4,10 +4,11 @@ import os
 import re
 import sys
 
-"""
+INFO = """
 Generate feedback from student submissions.
 The folder name should be the name of the Courseowrk in FEN.
 Required structure of the submission (12345, 54321, etc. are candidate numbers):
+
     ├── group1
     │   ├── 12345
     │   │   ├── submission_file_1
@@ -33,8 +34,9 @@ separated by a comma e.g.:
 """
 
 if len(sys.argv) != 2:
-    print "Please give folder with submissions (using the above structure) as"
-    print "an argument."
+    print "Please specify students submission folder as an argument.\n"
+
+    print INFO
     sys.exit(1)
 
 ROOT = os.path.abspath(sys.argv[1])

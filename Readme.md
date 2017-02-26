@@ -19,6 +19,9 @@ The third one is student group assignment in CSV format (with either *User* or
     yz67890,Group 2
     zy09876,Group 1
 
+You can filter groups by setting `GROUP_FIX` variable. Then only groups
+containing specified substring will be considered.
+
 # `generate_feedback.py` #
 Generate feedback from student submissions.
 The folder name should be the name of the Courseowrk in FEN.

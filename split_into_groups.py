@@ -4,7 +4,7 @@ import re
 import shutil
 import sys
 
-print """
+INFO = """
 Organise student's submissions by group rather than by candidate number.
 
 The first argument is folder with students submissions, downloaded from FEN.
@@ -12,40 +12,32 @@ The first argument is folder with students submissions, downloaded from FEN.
 The second argument is CSV student list that can be downloaded from FEN as
 *CSV Marks Download*, with *Student ID:* flag set to *All*, hence the following
 format:
+
     Candidate,Name,StudentNumber,Username,"Coursework_name",Mark,Flag
     12345,"Doe, John",0987654,ab54321,0N#,0,N#
 
 The third one is student group assignment in CSV format (with either *User* or
 *Student* keyword):
+
     {User,Student},Groups
     ab12345,Group 1
     ba54321,Group 2
     yz67890,Group 2
     zy09876,Group 1
+
+You can filter groups by setting `GROUP_FIX` variable. Then only groups
+containing specified substring will be considered.
 """
+
 if len(sys.argv) != 4:
-    print """
-The first argument is folder with students submissions, downloaded from FEN.
-
-The second argument is CSV student list that can be downloaded from FEN as
-*CSV Marks Download*, with *Student ID:* flag set to *All*, hence the following
-format:
-    Candidate,Name,StudentNumber,Username,"Coursework_name",Mark,Flag
-    12345,"Doe, John",0987654,ab54321,0N#,0,N#
-
-The third one is student group assignment in CSV format (with either *User* or
-*Student* keyword):
-    {User,Student},Groups
-    ab12345,Group 1
-    ba54321,Group 2
-    yz67890,Group 2
-    zy09876,Group 1
-    """
+    print "Too few arguments!\n"
+    print INFO
     sys.exit(1)
+
+GROUP_FIX = ""
 
 ROOT = os.path.abspath(sys.argv[1])
 OUTDIR = ROOT + "_sorted"
-GROUP_FIX = "Spam"
 
 students = pd.read_csv(sys.argv[2])
 students.index = students["Username"].values
